@@ -159,7 +159,6 @@ class GlApp {
         /**
          * TODO:
          * Implement Phong shading: 20 pts
-            Shaders: phong_color.vert / phong_color.frag
             Only need to handle first point light source
             Create your own custom model type (beyond the provided plane, cube, and sphere): 5 pts
             
@@ -167,7 +166,7 @@ class GlApp {
             Implement texture mapping: 10 pts
             Allow for tiling textures
             Usable with both Gouraud and Phong shading
-            Custom model should include texture coordinates
+            Custom model should include texture coordinates - at the bottom of models.js
             Enable multiple point lights to illuminate a scene: 5 pts
             Maximum of 10 lights - will need to change the light in the shaders to an array of lights (with size = 10)
             Make sure to cap color intensity at 1.0
@@ -186,20 +185,28 @@ class GlApp {
            console.log("The model is:", model);
            if(this.algorithm == "phong"){
                if(model.shader == "color"){
-                   console.log("Phong Color");
                    selected_shader = "phong_color";
-                   //this.gl.useProgram(this.shader[selected_shader].program);
+                   this.gl.useProgram(this.shader[selected_shader].program);
+                   //Lighting Uniforms
+                    this.gl.uniform3fv(this.shader[selected_shader].uniforms.light_position, this.scene.light.point_lights[0].position)
+                    this.gl.uniform3fv(this.shader[selected_shader].uniforms.light_color, this.scene.light.point_lights[0].color)
+                    this.gl.uniform3fv(this.shader[selected_shader].uniforms.light_ambient, this.scene.light.ambient)
+                    //Material Uniforms
+                    this.gl.uniform3fv(this.shader[selected_shader].uniforms.material_specular, model.material.specular);
+                    this.gl.uniform1f(this.shader[selected_shader].uniforms.material_shininess, model.material.shininess);
+                    //Camera Uniforms
+                    this.gl.uniform3fv(this.shader[selected_shader].uniforms.camera_position, this.scene.camera.position);
+                    this.gl.useProgram(this.shader[selected_shader].program);
                } else{
                    console.log("Phong Texture");
                     selected_shader = phone_texture;
-                    //this.gl.useProgram(this.shader[selected_shader].program);
+                    this.gl.useProgram(this.shader[selected_shader].program);
                     isTextured = true;
                }
 
 
            } else if(this.algorithm == "gouraud"){
                if(model.shader == "color"){
-                   console.log("Gouraud Color");
                    selected_shader = "gouraud_color";
                    //Change the program
                    this.gl.useProgram(this.shader[selected_shader].program);
@@ -208,8 +215,8 @@ class GlApp {
                     this.gl.uniform3fv(this.shader[selected_shader].uniforms.light_color, this.scene.light.point_lights[0].color)
                     this.gl.uniform3fv(this.shader[selected_shader].uniforms.light_ambient, this.scene.light.ambient)
                     //Material Uniforms
-                    this.gl.uniform3fv(this.shader[selected_shader].uniforms.material_specular, this.scene.models[i].material.specular);
-                    this.gl.uniform1f(this.shader[selected_shader].uniforms.material_shininess, this.scene.models[i].material.shininess);
+                    this.gl.uniform3fv(this.shader[selected_shader].uniforms.material_specular, model.material.specular);
+                    this.gl.uniform1f(this.shader[selected_shader].uniforms.material_shininess, model.material.shininess);
                     //Camera Uniforms
                     this.gl.uniform3fv(this.shader[selected_shader].uniforms.camera_position, this.scene.camera.position);
                } else{
@@ -248,12 +255,7 @@ class GlApp {
             //
 
             if(isTextured){
-                /*
-                this.gl.activeTexture(this.gl.TEXTURE0);
-                this.gl(bindTexture(this.gl.TEXTURE_2D, model.texture.id));
-                console.log("Texture ID =", model.texture.id);
-                this.gl.uniform1i(this.shader[selected_shader].uniforms.image, 0);
-                */
+
             }
 
             this.gl.bindVertexArray(this.vertex_array[this.scene.models[i].type]);
