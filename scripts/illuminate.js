@@ -126,9 +126,11 @@ class GlApp {
         // create a texture, and upload a temporary 1px white RGBA array [255,255,255,255]
         let texture = this.gl.createTexture();
 
-        //
-        // TODO: set texture parameters and upload a temporary 1px white RGBA array [255,255,255,255]
-        // 
+        this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
+        let tempPixel = [255, 255, 255, 255];
+        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 1, 1, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, new Uint8Array(tempPixel));
+        this.gl.bindTexture(this.gl.TEXTURE_2D, null);
 
         // download the actual image
         let image = new Image();
@@ -146,9 +148,31 @@ class GlApp {
         //
         // TODO: update image for specified texture
         //
+        this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, image_element);
+        this.gl.generateMipmap(this.gl.TEXTURE_2D);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, null);
+        this.render();
     }
 
     render() {
+        /**
+         * TODO:
+         * Implement Phong shading: 20 pts
+            Shaders: phong_color.vert / phong_color.frag
+            Only need to handle first point light source
+            Create your own custom model type (beyond the provided plane, cube, and sphere): 5 pts
+            
+            Additional features (to earn a B or A):
+            Implement texture mapping: 10 pts
+            Allow for tiling textures
+            Usable with both Gouraud and Phong shading
+            Custom model should include texture coordinates
+            Enable multiple point lights to illuminate a scene: 5 pts
+            Maximum of 10 lights - will need to change the light in the shaders to an array of lights (with size = 10)
+            Make sure to cap color intensity at 1.0
+         */
+
         // delete previous frame (reset both framebuffer and z-buffer)
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
         
@@ -156,11 +180,55 @@ class GlApp {
         for (let i = 0; i < this.scene.models.length; i ++) {
             if (this.vertex_array[this.scene.models[i].type] == null) continue;
             
-            //
-            // TODO: properly select shader here
-            //
-            let selected_shader = 'emissive';
-            this.gl.useProgram(this.shader[selected_shader].program);
+           let selected_shader;
+           let isTextured = false;
+           let model = this.scene.models[i];
+           console.log("The model is:", model);
+           if(this.algorithm == "phong"){
+               if(model.shader == "color"){
+                   console.log("Phong Color");
+                   selected_shader = "phong_color";
+                   //this.gl.useProgram(this.shader[selected_shader].program);
+               } else{
+                   console.log("Phong Texture");
+                    selected_shader = phone_texture;
+                    //this.gl.useProgram(this.shader[selected_shader].program);
+                    isTextured = true;
+               }
+
+
+           } else if(this.algorithm == "gouraud"){
+               if(model.shader == "color"){
+                   console.log("Gouraud Color");
+                   selected_shader = "gouraud_color";
+                   //Change the program
+                   this.gl.useProgram(this.shader[selected_shader].program);
+                   //Lighting Uniforms
+                    this.gl.uniform3fv(this.shader[selected_shader].uniforms.light_position, this.scene.light.point_lights[0].position)
+                    this.gl.uniform3fv(this.shader[selected_shader].uniforms.light_color, this.scene.light.point_lights[0].color)
+                    this.gl.uniform3fv(this.shader[selected_shader].uniforms.light_ambient, this.scene.light.ambient)
+                    //Material Uniforms
+                    this.gl.uniform3fv(this.shader[selected_shader].uniforms.material_specular, this.scene.models[i].material.specular);
+                    this.gl.uniform1f(this.shader[selected_shader].uniforms.material_shininess, this.scene.models[i].material.shininess);
+                    //Camera Uniforms
+                    this.gl.uniform3fv(this.shader[selected_shader].uniforms.camera_position, this.scene.camera.position);
+               } else{
+                   console.log("Gouraud Texture");
+                   selected_shader = "gouraud_texture";
+                   this.gl.useProgram(this.shader[selected_shader].program);
+                   isTextured = true;
+               }
+
+
+           } else if(this.algorithm == "emissive"){
+                selected_shader = 'emissive';
+                this.gl.useProgram(this.shader[selected_shader].program);
+           }
+           console.log("Shader =", selected_shader);
+
+           // TODO: Needed here because the this will break for phong
+           this.gl.useProgram(this.shader[selected_shader].program);
+            
 
             // transform model to proper position, size, and orientation
             glMatrix.mat4.identity(this.model_matrix);
@@ -178,6 +246,15 @@ class GlApp {
             //
             // TODO: bind proper texture and set uniform (if shader is a textured one)
             //
+
+            if(isTextured){
+                /*
+                this.gl.activeTexture(this.gl.TEXTURE0);
+                this.gl(bindTexture(this.gl.TEXTURE_2D, model.texture.id));
+                console.log("Texture ID =", model.texture.id);
+                this.gl.uniform1i(this.shader[selected_shader].uniforms.image, 0);
+                */
+            }
 
             this.gl.bindVertexArray(this.vertex_array[this.scene.models[i].type]);
             this.gl.drawElements(this.gl.TRIANGLES, this.vertex_array[this.scene.models[i].type].face_index_count, this.gl.UNSIGNED_SHORT, 0);
