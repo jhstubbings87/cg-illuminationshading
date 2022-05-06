@@ -250,20 +250,10 @@ class GlApp {
             //
 
             if(isTextured){
-<<<<<<< HEAD
                 this.gl.activeTexture(this.gl.TEXTURE0);
                 this.gl.bindTexture(this.gl.TEXTURE_2D, this.scene.models[i].texture.id);
                 this.gl.uniform1i(this.shader[selected_shader].uniforms.image, 0);
             }
-=======
-                //slide 16 of texture mapping powerpoint
-                this.gl.uniform2fv(this.shader[selected_shader].uniforms.texture_scale, model.texture.scale);
-                this.gl.activeTexture(this.gl.TEXTURE0);
-                this.gl.bindTexture(this.gl.TEXTURE_2D, model.texture.id);
-                console.log("Model Texture ID = ", model.texture.id);
-                this.gl.uniform1i(this.shader[selected_shader].uniforms.image, 0); //number needs to match texture number above
-            } 
->>>>>>> 5a8dc303c73c891f1a410d77387300daee8fbed7
 
             this.gl.bindVertexArray(this.vertex_array[this.scene.models[i].type]);
             this.gl.drawElements(this.gl.TRIANGLES, this.vertex_array[this.scene.models[i].type].face_index_count, this.gl.UNSIGNED_SHORT, 0);
