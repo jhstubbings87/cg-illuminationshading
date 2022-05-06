@@ -18,7 +18,8 @@ out vec3 ambient;
 out vec3 diffuse;
 out vec3 specular;
 
-void main() {    //Set the ambieance
+void main() {    
+    //Set the ambieance
     ambient = light_ambient;
     // set the diffusion
     vec3 envVertexPosition = (model_matrix * vec4(vertex_position, 1.0)).xyz;
