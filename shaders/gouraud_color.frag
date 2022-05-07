@@ -10,7 +10,10 @@ uniform vec3 material_color;    // Ka and Kd
 uniform vec3 material_specular; // Ks
 
 out vec4 FragColor;
+vec4 color;
 
 void main() {
-    FragColor = vec4(((ambient + diffuse + (specular * material_specular)) * material_color), 1.0);
+    //TODO: handle multiple light sources
+    color = vec4(((ambient + diffuse + (specular * material_specular)) * material_color), 1.0);
+    FragColor = clamp(color, 0.0, 1.0);
 }
