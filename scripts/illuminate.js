@@ -128,11 +128,11 @@ class GlApp {
 
         this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR_MIPMAP_NEAREST);
-        //this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
-        //this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.REPEAT); //S ishorizontal
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.REPEAT); //T is vertical
 
-        let tempPixel = [255, 255, 255, 255]; //white pixel
+        let tempPixel = [255, 255, 255, 255];
         this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 1, 1, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, new Uint8Array(tempPixel));
         this.gl.bindTexture(this.gl.TEXTURE_2D, null);
 
@@ -160,7 +160,6 @@ class GlApp {
         //this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
 
         this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, image_element);
-        this.gl.generateMipmap(this.gl.TEXTURE_2D);
         this.gl.bindTexture(this.gl.TEXTURE_2D, null);
         this.render();
     }
@@ -192,7 +191,6 @@ class GlApp {
            let selected_shader;
            let isTextured = false;
            let model = this.scene.models[i];
-           console.log("The model is:", model);
            if(this.algorithm == "phong"){
                if(model.shader == "color"){
                    selected_shader = "phong_color";
@@ -252,16 +250,14 @@ class GlApp {
             //
 
             if(isTextured){
-                //slide 16 of texture mapping powerpoint
-                this.gl.uniform2fv(this.shader[selected_shader].uniforms.texture_scale, model.texture.scale);
                 this.gl.activeTexture(this.gl.TEXTURE0);
-                this.gl.bindTexture(this.gl.TEXTURE_2D, model.texture.id);
-                console.log("Model Texture ID = ", model.texture.id);
-                this.gl.uniform1i(this.shader[selected_shader].uniforms.image, 0); //number needs to match texture number above
-            } 
+                this.gl.bindTexture(this.gl.TEXTURE_2D, this.scene.models[i].texture.id);
+                this.gl.uniform1i(this.shader[selected_shader].uniforms.image, 0);
+            }
 
             this.gl.bindVertexArray(this.vertex_array[this.scene.models[i].type]);
             this.gl.drawElements(this.gl.TRIANGLES, this.vertex_array[this.scene.models[i].type].face_index_count, this.gl.UNSIGNED_SHORT, 0);
+            this.gl.bindTexture(this.gl.TEXTURE_2D, null);
             this.gl.bindVertexArray(null);
         }
 
