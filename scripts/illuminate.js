@@ -223,10 +223,12 @@ class GlApp {
 
            //Change the program
            this.gl.useProgram(this.shader[selected_shader].program);
+           //adds the length of lights to the program
+           this.gl.uniform1i(this.shader[selected_shader].uniforms.numLights, this.scene.light.point_lights.length);
            //Lighting Uniforms
-           this.gl.uniform3fv(this.shader[selected_shader].uniforms.light_position, this.scene.light.point_lights[0].position)
-           this.gl.uniform3fv(this.shader[selected_shader].uniforms.light_color, this.scene.light.point_lights[0].color)
-           this.gl.uniform3fv(this.shader[selected_shader].uniforms.light_ambient, this.scene.light.ambient)
+           this.gl.uniform3fv(this.shader[selected_shader].uniforms.light_position, this.scene.light.point_lights[0].position);
+           this.gl.uniform3fv(this.shader[selected_shader].uniforms.light_color, this.scene.light.point_lights[0].color);
+           this.gl.uniform3fv(this.shader[selected_shader].uniforms.light_ambient, this.scene.light.ambient);
            //Material Uniforms
            this.gl.uniform3fv(this.shader[selected_shader].uniforms.material_specular, model.material.specular);
            this.gl.uniform1f(this.shader[selected_shader].uniforms.material_shininess, model.material.shininess);
@@ -246,10 +248,22 @@ class GlApp {
             this.gl.uniformMatrix4fv(this.shader[selected_shader].uniforms.projection_matrix, false, this.projection_matrix);
             this.gl.uniformMatrix4fv(this.shader[selected_shader].uniforms.view_matrix, false, this.view_matrix);
             this.gl.uniformMatrix4fv(this.shader[selected_shader].uniforms.model_matrix, false, this.model_matrix);
-            
-            //
-            // TODO: bind proper texture and set uniform (if shader is a textured one)
-            //
+
+            let colorLightArray = new Float32Array(30);
+            let positionOfLightsArray = new Float32Array(30);
+            let lengthOfLights = this.scene.light.point_lights.length;
+            for(let currLight = 0; currLight< lengthOfLights; currLight++){
+                //pass each color of light to uniform
+                colorLightArray[currLight*3] = this.scene.light.point_lights[currLight].color[0];
+                colorLightArray[currLight*3 + 1] = this.scene.light.point_lights[currLight].color[1];
+                colorLightArray[currLight*3 + 2] = this.scene.light.point_lights[currLight].color[2];
+                //Pass each position of light to the uniform
+                positionOfLightsArray[currLight*3] = this.scene.light.point_lights[currLight].position[0];
+                positionOfLightsArray[currLight*3 + 1] = this.scene.light.point_lights[currLight].position[1];
+                positionOfLightsArray[currLight*3 + 2] = this.scene.light.point_lights[currLight].position[2];
+            }
+            this.gl.uniform3fv(this.shader[selected_shader].uniforms["light_position[0]"], positionOfLightsArray);
+            this.gl.uniform3fv(this.shader[selected_shader].uniforms["light_color[0]"], colorLightArray);
 
             if(isTextured){
                 //slide 16 of texture mapping powerpoint
@@ -266,6 +280,9 @@ class GlApp {
         }
 
         // draw all light sources
+
+
+         
         for (let i = 0; i < this.scene.light.point_lights.length; i ++) {
             this.gl.useProgram(this.shader['emissive'].program);
 
