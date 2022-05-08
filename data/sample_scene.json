@@ -38,13 +38,17 @@
         },
         {
             "type": "custom",
-            "shader": "color",
+            "shader": "texture",
             "material": {
                 "color": [0.392, 0.176, 0.569],
                 "specular": [1.0, 1.0, 1.0],
                 "shininess": 4
             },
-            "center": [2.0, 1.5, 1.0],
+            "texture": {
+                "url": "images/kirby.png",
+                "scale": [1, 1]
+            },
+            "center": [0.0, 1.5, 2.5],
             "size": [1.0, 1.0, 1.0]
         }
     ],
