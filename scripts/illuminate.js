@@ -198,7 +198,7 @@ class GlApp {
                    selected_shader = "phong_color";
                } else{
                    console.log("Phong Texture");
-                    selected_shader = phone_texture;
+                    selected_shader = "phong_texture";
                     //this.gl.useProgram(this.shader[selected_shader].program);
                     isTextured = true;
                }
