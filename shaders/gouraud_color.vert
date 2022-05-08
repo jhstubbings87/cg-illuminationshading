@@ -22,9 +22,9 @@ out vec3 specular;
 void main() {    //Set the ambieance
     ambient = light_ambient;
     // set the diffusion
-    vec3 envVertexPosition = (model_matrix * vec4(vertex_position, 1.0)).xyz;
-    for(int i=0; i < numLights; i++){
+    vec3 envVertexPosition = vec3(model_matrix * vec4(vertex_position, 1.0));
 
+    for(int i=0; i < numLights; i++){
         vec3 L = normalize(light_position[i] - envVertexPosition);
         vec3 N = normalize(vertex_normal);
         //the max is diffusal brightness

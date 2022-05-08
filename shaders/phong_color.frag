@@ -21,13 +21,15 @@ void main() {
     vec3 diffuse = vec3(0,0,0);
     vec3 N = normalize(frag_normal);
     vec3 ambient = light_ambient;
-    for(int i=0; i < numLights; i++){
-        vec3 L = normalize(light_position[i] - frag_pos);
-        diffuse = diffuse + light_color[i] * max(0.0, dot(N, L));
-        vec3 R = (dot(N, L)) * 2.0 * N - L;
-        R = normalize(R);
+    for(int currLight=0; currLight < numLights; currLight++){
+        vec3 L = normalize(light_position[currLight] - frag_pos);
+        diffuse = diffuse + light_color[currLight] * max(0.0, dot(N, L));
+        vec3 R = normalize(2.0 * dot(N, L) * N-L);
         vec3 V = normalize(camera_position - frag_pos);
-        specular =  specular + pow(max(dot(R, V), 0.0), material_shininess) * light_color[i] * material_specular;
+        specular =  specular + pow(max(dot(R, V), 0.0), material_shininess) * material_specular * light_color[currLight];
     }
+    ambient = clamp(ambient, 0.0, 1.0);
+    diffuse = clamp(diffuse, 0.0, 1.0);
+    specular = clamp(specular, 0.0, 1.0);
     FragColor = vec4((ambient + diffuse + specular) * material_color, 1.0);
 }

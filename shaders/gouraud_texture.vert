@@ -25,17 +25,19 @@ out vec2 frag_texcoord;
 void main() {
     gl_Position = projection_matrix * view_matrix * model_matrix * vec4(vertex_position, 1.0);
     frag_texcoord = vertex_texcoord * texture_scale;
-	vec3 position = vec3(model_matrix * vec4(vertex_position, 1.0));
-	vec3 newVertexNormal = normalize(inverse(transpose(mat3(model_matrix))) * vertex_normal);
-	
-	for(int currLight=0; currLight < numLights; currLight++){
-		
-		vec3 directionOfLight = normalize(light_position[currLight] - position);
-		diffuse = diffuse + clamp(light_color[currLight] * dot(newVertexNormal, directionOfLight), 0.0, 1.0);
-
-		vec3 view_direction = normalize(camera_position - position); 
-		vec3 reflected_direction = normalize(reflect(-directionOfLight, newVertexNormal));
-		specular = specular + light_color[currLight] * pow(clamp(dot(reflected_direction, view_direction), 0.0, 1.0), material_shininess);
-	}
 	ambient = light_ambient;
+	ambient = clamp(ambient, 0.0, 1.0);
+
+	for(int currLight=0; currLight < numLights; currLight++){
+		vec3 V = vec3(model_matrix * vec4(vertex_position, 1.0));
+		vec3 N = normalize(inverse(transpose(mat3(model_matrix))) * vertex_normal);
+		vec3 directionOfLight = normalize(light_position[currLight] - V);
+		diffuse = diffuse + light_color[currLight] * dot(N, directionOfLight);
+		vec3 viewDirect = normalize(camera_position - V); 
+		vec3 reflectDirect = normalize(reflect(-directionOfLight, N));
+		specular = specular + light_color[currLight] * pow(dot(reflectDirect, viewDirect), material_shininess);
+	}
+	specular = clamp(specular, 0.0, 1.0);
+	diffuse = clamp(diffuse, 0.0, 1.0);
+
 }
