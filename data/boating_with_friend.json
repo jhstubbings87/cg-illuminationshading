@@ -1,0 +1,242 @@
+{
+    "background": [0.8, 0.8, 0.8],
+    "camera": {
+        "position": [-20.0, 10.0, 0.0],
+        "target": [0.0, 0.0, 0.0], 
+        "up": [0.0, 1.0, 0.0]
+
+    },
+    "models": [
+        {
+            "type": "plane",
+            "shader": "texture",
+            "material": {
+                "color": [1.0, 1.0, 1.0],
+                "specular": [0.0, 0.0, 0.0],
+                "shininess": 1
+            },
+            "texture": {
+                "url": "images/water.png",
+                "scale": [5, 5]
+            },
+            "center": [0.0, 0.0, 0.0],
+            "size": [30.0, 1.0, 30.0]
+        },
+        {
+            "type": "cube", 
+            "shader": "texture",
+            "material": {
+                "color": [1.0, 1.0, 1.0],
+                "specular": [1.0, 1.0, 1.0],
+                "shininess": 1
+            },
+            "texture":{
+                "url": "images/wood.jpg",
+                "scale": [1, 1]
+            },
+            "center": [0.0, 0.5, 2.0],
+            "size": [3.0, 2.0, 0.2]
+        },
+        {
+            "type": "cube", 
+            "shader": "texture",
+            "material": {
+                "color": [1.0, 1.0, 1.0],
+                "specular": [1.0, 1.0, 1.0],
+                "shininess": 1
+            },
+            "texture":{
+                "url": "images/wood.jpg",
+                "scale": [1, 1]
+            },
+            "center": [0.0, 0.5, -4.0],
+            "size": [3.0, 2.0, 0.2]
+        },
+        {
+            "type": "cube", 
+            "shader": "texture",
+            "material": {
+                "color": [1.0, 1.0, 1.0],
+                "specular": [1.0, 1.0, 1.0],
+                "shininess": 1
+            },
+            "texture":{
+                "url": "images/wood.jpg",
+                "scale": [1, 1]
+            },
+            "center": [1.5, 0.5, -1.0],
+            "size": [0.2, 2.0, 6.15]
+        },
+        {
+            "type": "cube", 
+            "shader": "texture",
+            "material": {
+                "color": [1.0, 1.0, 1.0],
+                "specular": [1.0, 1.0, 1.0],
+                "shininess": 1
+            },
+            "texture":{
+                "url": "images/wood.jpg",
+                "scale": [1, 1]
+            },
+            "center": [-1.5, 0.5, -1.0],
+            "size": [0.2, 2.0, 6.15]
+        },
+        {
+            "type": "cube", 
+            "shader": "texture",
+            "material": {
+                "color": [1.0, 1.0, 1.0],
+                "specular": [1.0, 1.0, 1.0],
+                "shininess": 1
+            },
+            "texture":{
+                "url": "images/wood.jpg",
+                "scale": [1, 1]
+            },
+            "center": [0.0, 0.2, -1.0],
+            "size": [3.0, 0.2, 6.15]
+        },
+        {
+            "type": "sphere",
+            "shader": "texture",
+            "material": {
+                "color": [1.0, 1.0, 1.0],
+                "specular": [1.0, 1.0, 1.0],
+                "shininess": 4
+            },
+            "texture": {
+                "url": "images/kirby.png",
+                "scale": [-1, -2.25]
+            },
+            "center": [0.0, 1.75, 0.50],
+            "size": [2.5, 2.5, 2.5]
+        },
+        {
+            "type": "sphere",
+            "shader": "texture",
+            "material": {
+                "color": [1.0, 1.0, 1.0],
+                "specular": [1.0, 1.0, 1.0],
+                "shininess": 4
+            },
+            "texture": {
+                "url": "images/voltorb.png",
+                "scale": [-1, -1]
+            },
+            "center": [0.0, 1.75, -2.25],
+            "size": [2.5, 2.5, 2.5]
+        },
+        {
+            "type": "custom",
+            "shader": "texture",
+            "material": {
+                "color": [1.0, 1.0, 1.0],
+                "specular": [1.0, 1.0, 1.0],
+                "shininess": 4
+            },
+            "texture": {
+                "url": "images/carbon.jpg",
+                "scale": [1, 1]
+            },
+            "center": [0.0, 0.15, 2.25],
+            "size": [1.25, 0.60, 1.25]
+        },
+        {
+            "type": "custom",
+            "shader": "texture",
+            "material": {
+                "color": [1.0, 1.0, 1.0],
+                "specular": [1.0, 1.0, 1.0],
+                "shininess": 4
+            },
+            "texture": {
+                "url": "images/scales.png",
+                "scale": [1, 1]
+            },
+            "center": [10.0, 0.0, 5.0],
+            "size": [0.25, 0.35, 1.3]
+        },
+        {
+            "type": "custom",
+            "shader": "texture",
+            "material": {
+                "color": [1.0, 1.0, 1.0],
+                "specular": [1.0, 1.0, 1.0],
+                "shininess": 4
+            },
+            "texture": {
+                "url": "images/scales.png",
+                "scale": [1, 1]
+            },
+            "center": [11.0, 0.0, 5.0],
+            "size": [0.25, 0.35, 1.3]
+        },
+        {
+            "type": "custom",
+            "shader": "texture",
+            "material": {
+                "color": [1.0, 1.0, 1.0],
+                "specular": [1.0, 1.0, 1.0],
+                "shininess": 4
+            },
+            "texture": {
+                "url": "images/scales.png",
+                "scale": [1, 1]
+            },
+            "center": [10.5, 0.0, 4.0],
+            "size": [0.25, 0.35, 1.3]
+        },
+        {
+            "type": "custom",
+            "shader": "texture",
+            "material": {
+                "color": [1.0, 1.0, 1.0],
+                "specular": [1.0, 1.0, 1.0],
+                "shininess": 4
+            },
+            "texture": {
+                "url": "images/scales.png",
+                "scale": [1, 1]
+            },
+            "center": [10.5, 0.0, 6.0],
+            "size": [0.25, 0.35, 1.3]
+        },
+        {
+            "type": "sphere",
+            "shader": "texture",
+            "material": {
+                "color": [1.0, 1.0, 1.0],
+                "specular": [1.0, 1.0, 1.0],
+                "shininess": 4
+            },
+            "texture": {
+                "url": "images/swirl.jpg",
+                "scale": [3, 3]
+            },
+            "center": [-10.0, 0.0, -10.0],
+            "size": [6.0, 0.1, 6.0]
+        }
+    ],
+    "light": {
+        "ambient": [0.15, 0.15, 0.15],
+        "point_lights": [
+            {
+                "position": [-15.0, 10.0, 0.0],
+                "color": [1.0, 1.0, 1.0]
+            },
+            {
+                "position": [15.0, 10.0, 0.0],
+                "color": [1.0, 1.0, 1.0]
+            },
+            {
+                "position": [0.0, 10.0, -15.0],
+                "color": [1.0, 1.0, 1.0]
+            },
+            {
+                "position": [0.0, 10.0, 15.0],
+                "color": [1.0, 1.0, 1.0]
+            }
+        ]
+    }
+}
